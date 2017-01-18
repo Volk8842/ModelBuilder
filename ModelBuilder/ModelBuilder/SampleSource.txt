@@ -1,0 +1,381 @@
+MyFinancesPageTO {
+accounts (ElfAccountTOList, optional): Список счетов ,
+bonusTotals (Array[BonusTotalTO], optional): Суммы баллов по каждой программе лояльности ,
+depositList (DepositListTO, optional): Список депозитов ,
+loanList (ElfLoanListTO, optional): Список кредитов
+}
+ElfAccountTOList {
+accounts (Array[ElfAccountTO], optional): счета ,
+b2pCards (Array[B2PCardTO], optional): Список внешних карт ,
+hceCard (HceCardTO, optional): HCE карта
+}
+BonusTotalTO {
+amount (number, optional): Количество накопленных бонусов ,
+availableAmount (number, optional): Количество активных бонусов, которые можно потратить ,
+loyaltyId (integer, optional): Ид программы лояльности в БД Фактуры
+}
+DepositListTO {
+deposits (Array[DepositTO], optional)
+}
+ElfLoanListTO {
+loans (Array[ElfLoanTO], optional)
+}
+ElfAccountTO {
+archive (boolean): Признак архивности счета ,
+availableWhenPay (number, optional),
+background (string, optional): background ,
+bankId (integer, optional): Id банка ,
+closeDateS (string, optional): Дата закрытия счета (format='dd.MM.yyyy') ,
+codes (Array[AccountCodeTO], optional): Кодики ,
+currency (CurrencyTO, optional): Валюта счета ,
+currencyCode (string, optional),
+deposit (DepositTO, optional): Депозит с типом cheсking ,
+detailSum (number, optional): Сумма для отображения в детальной информации ,
+detailSumName (string, optional): Название поля Суммы для отображения в детальной информации ,
+details (AccountDetailsTO, optional): Реквизиты счета ,
+fake (boolean, optional),
+hidden (boolean): Признак скрытия счета ,
+id (integer, optional): Id счета ,
+limits (Array[ElfLimitTO], optional): Лимиты по картам ,
+loan (ElfLoanTO, optional): Кредит ,
+name (string, optional): Пользовательское название ,
+number (string, optional): Номер счета ,
+permissions (AccountPermissionsTO21, optional): Права на действия по счету ,
+setting (AccountSettingsTO, optional): Настройки ,
+show (boolean, optional): отображать этот счет на странице или нет(не отображаем если выполняется ряд условий и счет привязан к кредиту или депозиту) , тогда этот счет показывается внутри соответствующего ему продукта ,
+showSum (number, optional): Сумма для отображения в списке
+}
+B2PCardTO {
+alias (string, optional): Алиас карты (название) ,
+archive (boolean): признак архивности счета ,
+canPay (boolean, optional): Право создавать и подписывать платежки ,
+cardId (integer, optional),
+confirmed (boolean, optional): Признак того, что карта подтверждена ,
+expDate (string, optional): Дата истечения срока действия ,
+hidden (boolean): признак скрытия счета ,
+panTail (string, optional): Последние 4 цифры ПАНа карты ,
+token (string, optional): Токен карты
+}
+HceCardTO {
+accountId (integer, optional): Id счета ,
+bankId (integer, optional): Id банка ,
+name (string, optional): Наименование ,
+pan (string, optional): маскированный ПАН карты ,
+panTail (string, optional): Последние 4 цифры ПАНа карты ,
+typeId (string, optional): тип карты. Возможные значения:'ZK', 'VISA', 'MASTERCARD', 'UNIONPAY', 'UNKNOWN'
+}
+DepositTO {
+archive (boolean): признак архивности счета ,
+background (string, optional): background ,
+bankId (integer, optional): Id банка ,
+closeDateS (string, optional): Дата закрытия договора ,
+closeEnabled (boolean): признак возможности закрытия через ДБО ,
+contractAccounts (Array[DepositContractAccountTO], optional): Информация о депозите (для мультивалютных вкладов содержит несколько элементов) ,
+hidden (boolean): признак скрытия счета ,
+id (integer, optional),
+lastUpdateDateS (string, optional): Дата последнего обновления информации ,
+number (string, optional): Номер договора системный ,
+openDateS (string, optional): Дата открытия договора ,
+ownerName (string, optional): Наименование клиента ,
+productName (string, optional): Название депозита ,
+status (ProductStatusTO, optional): Статус продукта ,
+term (DepositContractTermTO, optional): Основные условия депозитного договора.
+}
+ElfLoanTO {
+actions (LoanActionsTO, optional): список доступных действий по кредиту ,
+amount (number, optional): Сумма кредита ,
+annuity (number, optional): Указывается фиксированная сумма аннуитета, которая, как правило, прописана в кредитном договоре. ,
+archive (boolean): признак архивности счета ,
+background (string, optional): background ,
+clientName (string, optional): Наименование клиента ,
+closeDateS (string, optional): Дата закрытия договора (format='dd.MM.yyyy') ,
+comment (string, optional): Текстовое описание кредита ,
+currency (CurrencyTO, optional): Валюта кредита ,
+displayNumber (string, optional),
+fullAmount (number, optional): Полная стоимость кредита ,
+graceComment (string, optional): Комментарий к льготному курсу ,
+graceRate (number, optional): Льготный курс (может не указываться) ,
+hasSchedule (boolean, optional): Признак наличия графика платежей ,
+hidden (boolean): признак скрытия счета ,
+id (integer, optional),
+infos (Array[LoanInfoTO], optional),
+interestRate (number, optional): Процентная ставка (может не указываться) ,
+interestRateCash (number, optional): Процентная ставка по наличным операциям (может не указываться) ,
+interestRateNonCash (number, optional): Процентная ставка по безналичным операциям (может не указываться) ,
+lastUpdateDate (string, optional): Дата последнего обновления информации ,
+loanCards (Array[LoanCardTO], optional): Cписок карт ,
+loanPurpose (string, optional): Назначение кредита ,
+loaner (string, optional): Наименование заемщика ,
+maturityDateS (string, optional): Дата погашения. (format='dd.MM.yyyy') ,
+nextPayment (LoanPaymentTO, optional): Информация по очередному платежу ,
+openDateS (string, optional): Дата открытия договора (format='dd.MM.yyyy') ,
+outstandingDebt (LoanDebtTO, optional): Текущая задолженность по кредиту ,
+productName (string, optional): Название кредита ,
+repayAccount (string, optional): Номер счета для погашения кредита ,
+repayAccountCurrency (CurrencyTO, optional): Валюта счета гашения ,
+repayAccountId (integer, optional): ID счета гашения ,
+repayAccountOwnerInn (string, optional): ИНН владелеца счета гашения.
+Используется в качестве ИНН получателя
+платежа в платежном поручении, формируемом в оплату кредита. Имеет смысл только если
+указан отличный от владельца счета плательщика получатель (repay-account-owner-name указан).
+В противном случае указанное значение игнорируется ,
+repayBank (ElfBankInfoTO, optional): банк счета гашения(приходит если банк НЕ был в списке отданных банков моб.приложению при входе) ,
+repayBankId (integer, optional): Id банка счета гашения(приходит если банк был в списке отданных банков моб.приложению при входе) ,
+repayPayeeName (string, optional): Наименование владелеца счета гашения ,
+repayPaymentPurpose (string, optional): Назначение платежа для платежных поручений, формируемых
+в оплату кредита. Если не указано, используется стандартное назначение вида
+Гашение кредита по договору ХХХХ от ДДДД. ФИО. Без налога (НДС) ,
+status (ProductStatusTO, optional): Статус продукта ,
+typeCode (string, optional): Код типа кредита
+}
+AccountCodeTO {
+name (string, optional): Наименование кодика ,
+type (string, optional): Тип значения кодика = ['DATE', 'STRING', 'DOUBLE', 'INTEGER'],
+value (string, optional): Значение кодик
+}
+CurrencyTO {
+code (string, optional): Код валюты ,
+name (string, optional): Наименование ,
+roundDecimals (integer, optional): Количество десятичных разрядов для округления. -2: до двух знаков после запятой. 0:до единиц и тд. ,
+shortName (string, optional): Краткое наименование
+}
+AccountDetailsTO {
+openDate (string, optional): дата открытия ,
+ownerFio (string, optional): ФИО владельца
+}
+ElfLimitTO {
+amounts (Array[TotalAmountTO], optional): список остатков мультивалютной карты ,
+cards (Array[CardTO], optional): список карт ,
+limit (number, optional): Лимит (баланс) карты
+}
+AccountPermissionsTO21 {
+canDepositExchange (boolean, optional): Право списания при конверсии внутри мультивалютного вклада ,
+canDoStatement (boolean, optional): Право запрашивать выписку ,
+canPay (boolean, optional): Право создавать и подписывать платежки ,
+canPayFsgAndZk (boolean, optional): Право списания со счета при оплате услуг и денежных переводах ,
+canTransferToOtherBanks (boolean, optional): Право списания со счета при переводе в другие банки ,
+canTransferToOtherClients (boolean, optional): Право списания со счета при переводе на счета внутри банка ,
+canUpdateLoanInfo (boolean, optional): Возможность online обновлять информацию по кредиту ,
+creditAvailable (boolean, optional): Право зачисления на счет средств при подписи поручения на конверсию валюты ,
+debitAvailable (boolean, optional): Право списания со счета средств при подписи поручения на конверсию валюты ,
+onlineRateAvailable (boolean, optional): Право запрашивать online курс
+}
+AccountSettingsTO {
+cardToCardForOtherBank (ACSettingsTO, optional): необходимо отображать выбор карты при переводах карта-карта в чужой банк ,
+cardToCardForOwnBank (ACSettingsTO, optional): необходимо отображать выбор карты при переводах карта-карта внутри банка ,
+cardsForOtherDt (ACSettingsTO, optional): необходимо отображать выбор карты при зачислении в другой банк ,
+cardsForOwnDt (ACSettingsTO, optional): необходимо отображать выбор карты при списании внутри банка ,
+cardsForOwnKt (ACSettingsTO, optional): необходимо отображать выбор карты при зачислении внутри банка ,
+cardsForPhoneTransfer (ACSettingsTO, optional): необходимо отображать выбор карты при переводах по номеру телефона ,
+cardsForServiceDt (ACSettingsTO, optional): необходимо отображать выбор карты при оплате ФСГ
+}
+DepositContractAccountTO {
+account (DepositAccountTO, optional): Счет депозита ,
+actions (ActionsTO, optional): Доступные дейсвия ,
+amount (number, optional): Сумма депозита ,
+availableConversionAmount (number, optional): Сумма доступная для конвертации внтури вклада ,
+availableWithdrawalAmount (number, optional): Возможная сумма снятия с депозита на текущий момент. ,
+currentAmount (number, optional): Сумма, которая находится на каждом из депозитных счетов внутри одного договора на текущий момент. ,
+id (integer, optional),
+interestAccountBankBic (string, optional): Бик Банка счета для учета процентов ,
+interestAccountBankFullName (string, optional): Полное название Банка счета для учета процентов ,
+interestAccountNumber (string, optional): Счет для учета процентов ,
+interestPaid (number, optional): Сумма процентов, которая была начислена (фактически переведена на счета клиента)
+с начала действия договора с вычетом суммы налога на доход. ,
+interestRate (number, optional): Процентная ставка (может не указываться) ,
+interestRateComment (string, optional): Комментарий к процентной ставке ,
+maximumBalance (number, optional): Максимальный остаток ,
+maximumCreditAmount (number, optional): Максимальная сумма пополнения ,
+minimumBalance (number, optional): Неснижаемый остаток ,
+minimumCreditAmount (number, optional): Минимальная сумма пополнения ,
+nextInterestAmount (number, optional): Сумма процентов к следующей капитализации ,
+proportion (number, optional): Пропорция (6 знаков после запятой) ,
+returnAccountNumber (string, optional): Счет для возврата по депозиту ,
+withholdingTax (number, optional): Налог на доход
+}
+ProductStatusTO {
+code (string, optional): Код ,
+name (string, optional): Наименование
+}
+DepositContractTermTO {
+capitalizationPeriod (string, optional): Период капитализации ,
+contractPeriod (integer, optional): Срок действия (в сутках) ,
+conversionMode (string, optional): Режим конвертации = ['standard(Стандартныйрежим)', 'proportional(Режимпропорций)'],
+creditEnablePeriodEndS (string, optional): Дата окончания действия периода для доп. пополнения. (format='dd.MM.yyyy') ,
+creditEnablePeriodStartS (string, optional): Дата начала действия периода для доп. пополнения. (format='dd.MM.yyyy') ,
+creditEnabled (boolean, optional): Возможность пополнения депозита согласно договору ,
+expiryDateS (string, optional): Дата окончания действия договора. (format='dd.MM.yyyy') ,
+lastInterestPayDateS (string, optional): Дата последней капитализации (уплаты процентов). (format='dd.MM.yyyy') ,
+lastProlongationDateS (string, optional): Дата последней пролонгации. (format='dd.MM.yyyy') ,
+nextInterestPayDateS (string, optional): Дата очередного причисления процентов по депозиту. Если текущий день - дата капитализации, указывается текущая дата. (format='dd.MM.yyyy') ,
+paymentPurpose (string, optional): Назначение платежа для платежных поручений, формируемых для пополнения вклада ,
+prolongations (integer, optional): Кол-во пролонгаций ,
+typeCode (string, optional): Тип депозитного договора
+}
+LoanActionsTO {
+canPay (boolean, optional): Право создавать и подписывать платежки
+}
+LoanInfoTO {
+code (string, optional): Код ,
+infos (Array[LoanInfoTO], optional),
+name (string, optional): Наименование ,
+value (string, optional): Значение
+}
+LoanCardTO {
+name (string, optional): Название карты ,
+pan (string, optional): номер карты
+}
+LoanPaymentTO {
+amount (number, optional): Сумма очередного платежа ,
+dateS (string, optional): Дата очередного платежа. format(dd.MM.yyyy) ,
+gracePeriodS (string, optional): Срок льготного периода. format(dd.MM.yyyy) ,
+interestAmount (number, optional): В том числе сумма процентов ,
+otherChargesAmount (number, optional): В том числе другие комиссии и сборы ,
+overduePenaltyAmount (number, optional): В том числе штрафные санкции ,
+penaltyAmount (number, optional): В том числе пеня за несвоевременное исполнение обязательств ,
+principalAmount (number, optional): В том числе сумма основного долга
+}
+LoanDebtTO {
+amount (number, optional): Текущая сумма задолженности с учетом процентов ,
+interestAmount (number, optional): В том числе сумма начисленных процентов ,
+monthInterestAmount (number, optional): Проценты за текущий месяц ,
+overdueInterestAmount (number, optional): Сумма просроченных процентов ,
+overduePrincipalAmount (number, optional): Сумма просроченной задолженности ,
+penaltyAmount (number, optional): Штрафы, комиссии, сборы ,
+principalAmount (number, optional): В том числе сумма основного долга ,
+repayAccountBalance (number, optional): Остаток на счете гашения. Если счет гашения подключен - используем остаток из выписки, иначе - отсюда
+}
+ElfBankInfoTO {
+bic (string, optional): БИК ,
+city (string, optional): Город ,
+contacts (Array[PhoneTO], optional): Контактные телефоны банка ,
+corAccount (string, optional): Кор. счет ,
+fullName (string, optional): Полное наименование ,
+id (integer, optional): Id банка ,
+inn (string, optional): ИНН ,
+kpp (string, optional): КПП ,
+legalAddress (string, optional): Юридический адрес (адрес прописки) ,
+mainBranch (boolean, optional): Признак головы сети ,
+name (string, optional): Наименование ,
+nameShort (string, optional): Краткое наименование ,
+network (integer, optional): Код филиальной сети ,
+ownEmail (string, optional): Email для уведомлений ,
+pushState (string, optional): Статус пушей в банке для данного пользователя = ['UNKNOWN', 'REGISTERED', 'ENABLED', 'NONE', 'UNAVAILABLE'],
+settings (ElfBankInfoSettingsTO, optional): Настройки ,
+supportEmails (Array[string], optional): Emails поддержки банка
+}
+TotalAmountTO {
+amount (number, optional): Сумма ,
+currency (CurrencyTO, optional): Валюта
+}
+CardTO {
+allowStatement (boolean, optional): Возможность запрашивать выписку по карте ,
+auxInfoCode (string, optional): Код карты ,
+background (string, optional): background ,
+bonusAvailableBalance (number, optional): Количество активных бонусов по карте, которые можно потратить ,
+bonusBalance (number, optional): Количество накопленных бонусов по карте ,
+bonusBalanceName (string, optional): Название бонусов по карте. Deprecated: необходимо использовать LoyaltySettingsTO из ElfBankInfoSettingsTO ,
+canAddToApplePay (boolean, optional): Признак 'Может быть добавлена в AppleWallet' ,
+canChoosePeriodInStatement (boolean, optional),
+canLock (boolean, optional): Возможность заблокировать карту ,
+canUnlock (boolean, optional): Возможность разблокировать карту ,
+cardHolderName (string, optional): Имя владельца карты так как оно написано на самой карте ,
+expireDateForCard (string, optional): MM/yy ,
+expireDateS (string, optional): dd.MM.yyyy ,
+hceEnabled (boolean, optional): Признак возможности использовать карту для HCE ,
+hidden (boolean): признак скрытия карты ,
+iconName (string, optional): Наименование иконки ,
+limitId (string, optional),
+loyaltyId (integer, optional): Ид программы лояльности в БД Фактуры ,
+name (string, optional): Наименование ,
+num (string, optional): маскированный ПАН карты ,
+panMode (string, optional) = ['GET_PAN', 'GET_PAN_FIO', 'CALC_HASH', 'FIO_PAN_TAIL', 'NONE'],
+showTransSchemes (boolean, optional): Возможность изменения настроек безопасности ,
+smallIconName (string, optional): Наименование маленькой иконки продукта ,
+status (string, optional): статус карты = ['WORK', 'BLOCK', 'CLOSE', 'EXPIRED', 'NOT_ACTIVATED', 'REISSUE'],
+typeId (string, optional): тип карты. Возможные значения:'ZK', 'VISA', 'MASTERCARD', 'UNIONPAY', 'UNKNOWN' ,
+virtual (boolean): признак того, что карта виртуальная
+}
+ACSettingsTO {
+cardInfoCodes (Array[string], optional): список кодов отображаемых карт для режима WITH_CARDS ,
+mode (string, optional): режим отображения счета = ['WITH_CARDS', 'WITHOUT_CARDS', 'DISABLED']
+}
+DepositAccountTO {
+comment (string, optional): Пользовательское название счета депозита ,
+creditAmountsCurrency (CurrencyTO, optional): Валюта суммы пополнения ,
+currency (CurrencyTO, optional): Валюта счета депозита ,
+id (integer, optional): Id депозита ,
+name (string, optional): Наименование счета депозита ,
+number (string, optional): Номер счета депозита
+}
+ActionsTO {
+canDoStatement (boolean, optional): Выписка по счету ,
+depositConversion (boolean, optional): Конвертировать в другую валюту ,
+depositIn (boolean, optional): Пополнить вклад ,
+depositOut (boolean, optional): Снять со вклада
+}
+PhoneTO {
+notes (string, optional): комментарий ,
+phone (string, optional): телефон
+}
+ElfBankInfoSettingsTO {
+account20only (boolean, optional): Признако того, что счета могут быть только 20-значные ,
+allowCardToCardTransfer (boolean, optional): Доступность переводов карта-карта ,
+allowRecalculateExchangeRates (boolean, optional): Разрешен пересчет суммы конверсии ,
+allowWishRate (boolean, optional): Разрешен желаемый курс ,
+canCreateFreeDocs (boolean, optional): Возможность создавать ДФС ,
+closeDepositEnabled (boolean, optional): Доступность закрытия вкладов ,
+docTypeIdForPhoto (integer, optional): Id типа документа ,
+enableHce (boolean, optional): Доступность HCE ,
+fsgEnabled (boolean, optional): Доступность оплаты услуг ,
+hceOfferUrl (string, optional): URL на дополнительную информацию об условиях выпуска HCE. ,
+loyaltySettings (Array[LoyaltySettingsTO], optional): Настройки лояльности ,
+mpiSettings (MpiSettingsTO, optional): Mpi настройки ,
+onlyBalanceRequestOnLogin (boolean, optional): Только запрос баланса при входе ,
+openDepositEnabled (boolean, optional): Доступность открытия вкладов ,
+otherBankC2CSettings (ElfC2CSettingsTO, optional): Настройки переводов карта-карта в другой банк ,
+ownBankC2CSettings (ElfC2CSettingsTO, optional): Настройки переводов карта-карта в свой банк ,
+pfmEnabled (boolean, optional): Признак включен ли ПФМ ,
+showCBRate (boolean, optional): Отображать курсы ЦБ ,
+showCourses (boolean, optional): доступность курсов валют ,
+showCredits (boolean, optional): Доступность раздела кредитов ,
+showCurrencyTransfer (boolean, optional): доступность переводов валюты ,
+showDeposits (boolean, optional): Доступность раздела вкладов ,
+showDiscounts (boolean, optional): Доступность скидок ,
+showExchange (boolean, optional): доступность обмена валюты ,
+showFreeDocs (boolean, optional): Доступность ДСФ ,
+showMessageHistory (boolean, optional): Доступность раздела истории сообщений ,
+showTransfers (boolean, optional): Доступность переводов внутри/в другой банк ,
+showTransfersByPhone (boolean, optional): Доступность переводов по номеру телефона ,
+showTransfersToMyAcc (boolean, optional): Доступность переводов на свои счета ,
+smsCodePhoneNumber (string, optional): Номер телефона для SMS-кодов
+}
+LoyaltySettingsTO {
+accruedBonusText (string, optional): Текст для 'Накопленных баллов' ,
+availablePageInfo (boolean, optional): Доступна страница с описанием ,
+bonusCashbackAvailable (boolean, optional): Признак возможности компенсации ,
+cashbackIcon (string, optional): Имя иконки для компенсации ,
+cashbackImage (string, optional): Имя картинки при компенсации ,
+listIcon (string, optional): Имя иконки в списке операций ,
+loyaltyId (integer, optional): Ид программы лояльности в БД Фактуры ,
+pluralName (string, optional): Название для множнественного числа баллов ,
+singularName (string, optional): Название для единственного числа баллов
+}
+MpiSettingsTO {
+depositReplenishment (boolean, optional): пополнение депозита ,
+loanPayment (boolean, optional): оплата кредита ,
+merchantId (string, optional),
+otherClientOtherBankToAcc (boolean, optional): Разрешены переводы с карты другого банка другому в другом банке на счет ,
+otherClientOtherBankToCard (boolean, optional): Разрешены переводы с карты другого банка другому в другом банке на карту ,
+otherClientOwnBankToAcc (boolean, optional): Разрешены переводы с карты другого банка другому в текущем банке на счет ,
+otherClientOwnBankToCard (boolean, optional): Разрешены переводы с карты другого банка другому в текущем банке на карту ,
+selfOwnBankToAccAndCard (boolean, optional): Разрешены переводы с карты другого банка на свой счет/карту ,
+servicePayment (boolean, optional): оплата услуг ,
+url (string, optional)
+}
+ElfC2CSettingsTO {
+allowSaveCard (boolean, optional): возможность сохранения и отображения карт/ы ,
+merchant (string, optional): merchant для переводов карта-карта ,
+type (string, optional): Тип перевода = ['GET_PAN', 'GET_PAN_FIO', 'CALC_HASH', 'FIO_PAN_TAIL', 'NONE'],
+url (string, optional): URL для заполнения данных
+}

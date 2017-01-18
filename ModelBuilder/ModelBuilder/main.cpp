@@ -16,15 +16,22 @@ enum ModelTypeId {
 	tArrayCustomModel
 };
 
+struct ModelType {
+	ModelTypeId id;
+	string customTypeName;
+};
+
 struct Field {
 	string name;
-	ModelTypeId type;
+	ModelType type;
 };
 
 struct Model {
 	string name;
 	vector<Field*> fields;
 };
+
+
 
 ModelTypeId getType(string str) {
 	if (str == "boolean") return tBoolean;
@@ -37,6 +44,44 @@ ModelTypeId getType(string str) {
 		return tArrayCustomModel;
 	}
 	return tCustomModel;
+}
+
+string removeArrayText(string str) {
+	auto start = str.find_first_of("[");
+	auto end = str.length();
+	if (start != string::npos) {
+		start++;
+		end = str.find_first_of("]");
+	}
+	else {
+		start = 0;
+	}
+	return str.substr(start, end - start);
+}
+
+string getCustomTypeName(string str) {
+	ModelTypeId type = getType(str);
+	switch (type) {
+	case tBoolean:
+	case tInteger:
+	case tFloat:
+	case tString:
+		return str;
+	case tArrayInteger:
+	case tArrayString:
+		return removeArrayText(str);
+	case tArrayCustomModel:
+	case tCustomModel:
+		str = removeArrayText(str);
+		size_t toPos;
+		toPos = str.find("TO");
+		if (toPos != string::npos) {
+			str.erase(toPos, 2);
+		}
+		return str += "Model";
+	default:
+		return str;
+	}
 }
 
 string getTypeName(ModelTypeId type) {
@@ -74,7 +119,7 @@ void main() {
 			if (textLine[0] >= 'A' && textLine[0] <= 'Z') {
 				string name = textLine.substr(0, textLine.find_first_of(" "));
 				newModel = new Model();
-				newModel->name = name;
+				newModel->name = getCustomTypeName(name);
 				models.push_back(newModel);
 			}
 			// new field in current model
@@ -85,7 +130,8 @@ void main() {
 				string typeText = textLine.substr(openPos, closePos - openPos);
 				Field* newField = new Field();
 				newField->name = nameText;
-				newField->type = getType(typeText);
+				newField->type.id = getType(typeText);
+				newField->type.customTypeName = getCustomTypeName(typeText);
 				newModel->fields.push_back(newField);
 			}
 		}
@@ -95,7 +141,15 @@ void main() {
 	for (const auto& model : models) {
 		cout << model->name << endl;
 		for (const auto& field : model->fields) {
-			cout << " - " << field->name << " (" << getTypeName(field->type) << ")" << endl;
+			switch (field->type.id) {
+			case tArrayInteger:
+			case tArrayString:
+			case tArrayCustomModel:
+				cout << " - " << "List<" << field->type.customTypeName << "> " << field->name << endl;
+				break;
+			default:
+				cout << " - " << field->type.customTypeName << " " << field->name << endl;
+			}
 		}
 	}
 
