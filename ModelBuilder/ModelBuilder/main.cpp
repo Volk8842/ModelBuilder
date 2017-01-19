@@ -200,26 +200,17 @@ void createModelFile(Model& model) {
 	for (const auto& field : model.fields) {
 		modelFile << "    private " << field->type.name << " " << field->name << ";" << endl;
 	}
-	modelFile << "    // [#0] Custom fields" << endl;
-	modelFile << endl;
-	modelFile << "    // [#end]" << endl;
 	modelFile << endl;
 	modelFile << "    public " + model.type.name + "(JsonObject in) {" << endl;
 	for (const auto& field : model.fields) {
 		modelFile << "        " << getJsonConstructorTextline(*field) << endl;
 	}
-	modelFile << "        // [#1] Custom fields init" << endl;
-	modelFile << endl;
-	modelFile << "        // [#end]" << endl;
 	modelFile << "    }" << endl;
 	modelFile << endl;
 	modelFile << "    public " + model.type.name + "(Parcel in) {" << endl;
 	for (const auto& field : model.fields) {
 		modelFile << "        " << getParcelConstructorTextline(*field) << endl;
 	}
-	modelFile << "        // [#2] Custom fields init" << endl;
-	modelFile << endl;
-	modelFile << "        // [#end]" << endl;
 	modelFile << "    }" << endl;
 	modelFile << endl;
 	modelFile << "    @Override" << endl;
@@ -227,9 +218,6 @@ void createModelFile(Model& model) {
 	for (const auto& field : model.fields) {
 		modelFile << "        " << getWriteToParcelTextline(*field) << endl;
 	}
-	modelFile << "        // [#3] Custom fields write" << endl;
-	modelFile << endl;
-	modelFile << "        // [#end]" << endl;
 	modelFile << "    }" << endl;
 	modelFile << endl;
 	modelFile << "    @Override" << endl;
@@ -239,10 +227,6 @@ void createModelFile(Model& model) {
 	for (const auto& field : model.fields) {
 		modelFile << endl << getGetterTextline(*field);
 	}
-	modelFile << endl;
-	modelFile << "    // [#4] Custom methods" << endl;
-	modelFile << endl; 
-	modelFile << "    // [#end]" << endl;
 	modelFile << "}" << endl;
 	modelFile.close();
 }
