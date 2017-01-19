@@ -76,8 +76,10 @@ void setObjectType(ObjectType& type, string text) {
 		break;
 	case TypeId::tArrayInteger:
 		type.name = "int[]";
+		break;
 	case TypeId::tArrayString:
 		type.name = "String[]";
+		break;
 	case TypeId::tCustomModel:
 		toPos = text.find("TO");
 		if (toPos != string::npos) {
@@ -113,7 +115,9 @@ string getJsonConstructorTextline(Field field) {
 	case TypeId::tArrayString:
 		return "this." + field.name + " = getStringArray(in, \"" + field.name + "\");";
 	case TypeId::tArrayCustomModel:
-		return "this." + field.name + " = getModelList(in, \"" + field.name + "\", " + field.type.name + ".class);";
+		auto startListType = field.type.name.find('<') + 1;
+		auto sizeListType = field.type.name.find('>') - startListType;
+		return "this." + field.name + " = getModelList(in, \"" + field.name + "\", " + field.type.name.substr(startListType, sizeListType) + ".class);";
 	}
 }
 
@@ -134,7 +138,9 @@ string getParcelConstructorTextline(Field field) {
 	case TypeId::tArrayString:
 		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.createStringArray();";
 	case TypeId::tArrayCustomModel:
-		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.createTypedArrayList(" + field.type.name + ".CREATOR);";
+		auto startListType = field.type.name.find('<') + 1;
+		auto sizeListType = field.type.name.find('>') - startListType;
+		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.createTypedArrayList(" + field.type.name.substr(startListType, sizeListType) + ".CREATOR);";
 	}
 }
 
@@ -218,10 +224,10 @@ void createModelFile(Model& model) {
 	modelFile << "    public int describeContents() {" << endl;
 	modelFile << "        return 0;" << endl;
 	modelFile << "    }" << endl;
-	modelFile << endl; 
 	for (const auto& field : model.fields) {
-		modelFile << getGetterTextline(*field) << endl;
+		modelFile << endl << getGetterTextline(*field);
 	}
+	modelFile << "}" << endl;
 	modelFile.close();
 }
 
