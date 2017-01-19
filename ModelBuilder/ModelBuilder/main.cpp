@@ -167,7 +167,7 @@ string getGetterTextline(Field field) {
 
 void createModelFile(Model& model) {
 	ofstream modelFile;
-	string filename = model.type.name + ".java";
+	string filename = "output\\" + model.type.name + ".java";
 	modelFile.open(filename, ios_base::trunc);
 	modelFile << "package ru.pochtabank.fakturadbo.api.model.faktura;" << endl;
 	modelFile << endl;
