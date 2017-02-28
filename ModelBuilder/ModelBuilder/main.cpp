@@ -8,11 +8,11 @@ using namespace std;
 
 enum class TypeId {
 	tBoolean,
-	tInteger,
+	tLong,
 	tFloat,
 	tString,
 	tCustomModel,
-	tArrayInteger,
+	tArrayLong,
 	tArrayString,
 	tArrayCustomModel
 };
@@ -34,11 +34,11 @@ struct Model {
 
 TypeId getType(string str) {
 	if (str == "boolean") return TypeId::tBoolean;
-	if (str == "integer") return TypeId::tInteger;
+	if (str == "integer") return TypeId::tLong;
 	if (str == "number") return TypeId::tFloat;
 	if (str == "string") return TypeId::tString;
 	if (str.substr(0, 6) == "Array[") {
-		if (str.substr(6, 3) == "int") return TypeId::tArrayInteger;
+		if (str.substr(6, 3) == "int") return TypeId::tArrayLong;
 		if (str.substr(6, 3) == "str") return TypeId::tArrayString;
 		return TypeId::tArrayCustomModel;
 	}
@@ -63,19 +63,19 @@ void setObjectType(ObjectType& type, string text) {
 	size_t toPos;
 	switch (type.id) {
 	case TypeId::tBoolean:
-		type.name = "boolean";
+		type.name = "Boolean";
 		break;
-	case TypeId::tInteger:
-		type.name = "int";
+	case TypeId::tLong:
+		type.name = "Long";
 		break;
 	case TypeId::tFloat:
-		type.name = "float";
+		type.name = "Float";
 		break;
 	case TypeId::tString:
 		type.name = "String";
 		break;
-	case TypeId::tArrayInteger:
-		type.name = "int[]";
+	case TypeId::tArrayLong:
+		type.name = "long[]";
 		break;
 	case TypeId::tArrayString:
 		type.name = "String[]";
@@ -101,17 +101,17 @@ void setObjectType(ObjectType& type, string text) {
 string getJsonConstructorTextline(Field field) {
 	switch (field.type.id) {
 	case TypeId::tBoolean:
-		return "this." + field.name + " = getBooleanField(in, \"" + field.name + "\", false);";
-	case TypeId::tInteger:
-		return "this." + field.name + " = getIntField(in, \"" + field.name + "\", 0);";
+		return "this." + field.name + " = getBooleanField(in, \"" + field.name + "\");";
+	case TypeId::tLong:
+		return "this." + field.name + " = getLongField(in, \"" + field.name + "\");";
 	case TypeId::tFloat:
-		return "this." + field.name + " = getFloatField(in, \"" + field.name + "\", 0.0f);";
+		return "this." + field.name + " = getFloatField(in, \"" + field.name + "\");";
 	case TypeId::tString:
 		return "this." + field.name + " = getStringField(in, \"" + field.name + "\", \"\");";
 	case TypeId::tCustomModel:
 		return "this." + field.name + " = getModel(in, \"" + field.name + "\", " + field.type.name + ".class);";
-	case TypeId::tArrayInteger:
-		return "this." + field.name + " = getIntArray(in, \"" + field.name + "\");";
+	case TypeId::tArrayLong:
+		return "this." + field.name + " = getLongArray(in, \"" + field.name + "\");";
 	case TypeId::tArrayString:
 		return "this." + field.name + " = getStringArray(in, \"" + field.name + "\");";
 	case TypeId::tArrayCustomModel:
@@ -125,16 +125,16 @@ string getParcelConstructorTextline(Field field) {
 	switch (field.type.id) {
 	case TypeId::tBoolean:
 		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.readByte() != 0;";
-	case TypeId::tInteger:
-		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.readInt();";
+	case TypeId::tLong:
+		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.readLong();";
 	case TypeId::tFloat:
 		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.readFloat();";
 	case TypeId::tString:
 		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.readString();";
 	case TypeId::tCustomModel:
 		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.readParcelable(" + field.type.name + ".class.getClassLoader());";
-	case TypeId::tArrayInteger:
-		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.createIntArray();";
+	case TypeId::tArrayLong:
+		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.createLongArray();";
 	case TypeId::tArrayString:
 		return "if (ParcelUtils.readBooleanFromParcel(in)) this." + field.name + " = in.createStringArray();";
 	case TypeId::tArrayCustomModel:
@@ -148,16 +148,16 @@ string getWriteToParcelTextline(Field field) {
 	switch (field.type.id) {
 	case TypeId::tBoolean:
 		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeByte(" + field.name + " ? (byte)1 : (byte)0);";
-	case TypeId::tInteger:
-		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeInt(" + field.name + ");";
+	case TypeId::tLong:
+		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeLong(" + field.name + ");";
 	case TypeId::tFloat:
 		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeFloat(" + field.name + ");";
 	case TypeId::tString:
 		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeString(" + field.name + ");";
 	case TypeId::tCustomModel:
 		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeParcelable(" + field.name + ", 0);";
-	case TypeId::tArrayInteger:
-		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeIntArray(" + field.name + ");";
+	case TypeId::tArrayLong:
+		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeLongArray(" + field.name + ");";
 	case TypeId::tArrayString:
 		return "if (ParcelUtils.writeBooleanToParcel(dest, " + field.name + ")) dest.writeStringArray(" + field.name + ");";
 	case TypeId::tArrayCustomModel:
@@ -182,6 +182,11 @@ void createModelFile(Model& model) {
 	modelFile << "import java.util.List;" << endl;
 	modelFile << "import ru.pochtabank.dbo.base.model.BaseModel;" << endl;
 	modelFile << "import ru.pochtabank.utils.data.ParcelUtils;" << endl;
+	modelFile << endl;
+	modelFile << "/**" << endl;
+	modelFile << "* " << "Autogenerated on " << __DATE__ << endl;
+	modelFile << "* " << "Don't place any additional methods here, instead use custom container for this model" << endl;
+	modelFile << "*/" << endl;
 	modelFile << endl;
 	modelFile << "public class " << model.type.name << " extends BaseModel {" << endl;
 	modelFile << endl;
